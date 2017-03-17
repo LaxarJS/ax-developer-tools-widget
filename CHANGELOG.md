@@ -3,6 +3,8 @@
 
 ## Last Changes
 
+- [#62](https://github.com/LaxarJS/ax-developer-tools-widget/issues/62): use react instead of angular and laxar 2.x for content application
+
 
 ## v2.2.0
 

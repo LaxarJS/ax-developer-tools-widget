@@ -10,14 +10,5 @@ npm-debug.log
 /var/build/*.map
 /var/build/require_configured.js
 
-/bower_components/*
+/spec-output
 
-!/bower_components/laxar-uikit/
-/bower_components/laxar-uikit/*
-!/bower_components/laxar-uikit/dist/
-/bower_components/laxar-uikit/dist/*
-!/bower_components/laxar-uikit/dist/themes
-/bower_components/laxar-uikit/dist/themes/*
-!/bower_components/laxar-uikit/dist/themes/default.theme
-/bower_components/laxar-uikit/dist/themes/default.theme/*
-!/bower_components/laxar-uikit/dist/themes/default.theme/fonts
