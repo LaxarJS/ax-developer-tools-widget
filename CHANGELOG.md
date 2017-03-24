@@ -3,6 +3,8 @@
 
 ## Last Changes
 
+- [#64](https://github.com/LaxarJS/ax-developer-tools-widget/issues/64): fix submodule repository
+
 - [#63](https://github.com/LaxarJS/ax-developer-tools-widget/issues/63): using content application as submodule now
 
 - [#62](https://github.com/LaxarJS/ax-developer-tools-widget/issues/62): use react instead of angular and laxar 2.x for content application
