@@ -1,3 +1,11 @@
+.idea
+atlassian-ide-plugin.xml
+*.orig
 .sass-cache
-test-results.xml
-/.idea
+/dist
+/build
+/spec-output
+/node_modules
+/tmp
+*.backup.json
+npm-debug.log

@@ -1,9 +1,9 @@
 {
-   "name": "ax-developer-tools-widget",
+   "name": "laxar-developer-tools-widget",
    "description": "Provides developer tools to inspect the event bus and the application log, and the grid-alignment of widgets",
 
    "integration": {
-      "technology": "angular",
+      "technology": "plain",
       "type": "widget"
    },
 
@@ -40,38 +40,6 @@
                "htmlLabel": {
                   "type": "string",
                   "default": "<i class='fa fa-cube'></i> DeveloperTools"
-               }
-            }
-         },
-         "grid": {
-            "type": "object",
-            "properties": {
-               "anchor": {
-                  "type": "string"
-               },
-               "columns": {
-                  "type": "object",
-                  "properties": {
-                     "count": {
-                        "type": "integer",
-                        "description": "The number of grid columns to draw"
-                     },
-                     "width": {
-                        "type": "integer",
-                        "description": "The width of each CSS grid column (in pixels, including padding, without gutter)"
-                     },
-                     "padding": {
-                        "type": "integer",
-                        "description": "The left and right padding for each grid column (in pixels)"
-                     },
-                     "gutter": {
-                        "type": "integer",
-                        "description": "The horizontal space between two grid columns (in pixels)."
-                     }
-                  }
-               },
-               "css": {
-                  "type": "object"
                }
             }
          },
