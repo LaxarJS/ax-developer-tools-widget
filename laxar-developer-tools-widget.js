@@ -59,12 +59,13 @@ export function create( withDom, features, eventBus, configuration, log ) {
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
    function openContentWindow( mode ) {
-
       // const contentUrl = `${require.toUrl( './content/' ) +
       //    ( mode || ( $scope.features.develop.enabled ? 'debug' : 'index' ) )}.html`;
 
-      const contentUrl =
+      let contentUrl =
          `./content/${( mode || ( features.develop.enabled ? 'debug' : 'index' ) )}.html`;
+      contentUrl = 'http://localhost:8080/' +
+                   'application/widgets/laxar/laxar-developer-tools-widget/content/#!/tools/';
 
       const settings = {
          resizable: 'yes',
@@ -92,6 +93,8 @@ export function create( withDom, features, eventBus, configuration, log ) {
       }
    }
 
+   ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
    function handleButtonClicked() {
       return openContentWindow;
    }
@@ -100,10 +103,10 @@ export function create( withDom, features, eventBus, configuration, log ) {
 
    function renderButton( element ) {
       const developerButton = document.createElement( 'BUTTON' );
-      developerButton.onclick = openContentWindow();
+      developerButton.onclick = handleButtonClicked();
       developerButton.type = 'button';
       developerButton.className = 'btn btn-warning';
-      developerButton.innerHTML( features.button.htmlLabel );
+      developerButton.innerHTML = features.button.htmlLabel;
       element.appendChild( developerButton );
    }
 
