@@ -1,14 +1,13 @@
 {
-  "name": "laxar-accordion-widget",
-  "version": "3.0.0-alpha.0",
-  "description": "Provides multiple widget areas in the form of an accordion",
+   "name": "laxar-developer-tools-widget",
+   "version": "2.3.0-pre",
+   "description": "Provides developer tools to inspect the event bus and the application log, and the grid-alignment of widgets",
   "homepage": "http://laxarjs.org",
-  "main": "laxar-accordion-widget.js",
-  "browser": "dist/laxar-accordion-widget.js",
+  "main": "laxar-developer-tools-widget.js",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/LaxarJS/ax-accordion-widget.git"
+    "url": "https://github.com/LaxarJS/laxar-developer-tools-widget.git"
   },
   "scripts": {
     "prepublish": "npm run dist",
@@ -17,9 +16,6 @@
     "start": "webpack && webpack-dev-server --inline",
     "karma": "karma start karma.config.js",
     "eslint": "eslint *.js spec"
-  },
-  "dependencies": {
-    "laxar-accordion-control": "2.0.0"
   },
   "devDependencies": {
     "angular": "^1.5.11",
