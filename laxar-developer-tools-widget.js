@@ -19,8 +19,13 @@ let enabled;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const injections = [ 'axWithDom', 'axFeatures', 'axEventBus', 'axConfiguration', 'axLog' ];
-export function create( withDom, features, eventBus, configuration, log ) {
+export const injections = [ 'axWithDom', 'axFeatures', 'axEventBus', 'axConfiguration', 'axLog', 'axTooling' ];
+export function create( withDom, features, eventBus, configuration, log, tooling ) {
+   if( !configuration.get( 'tooling.enabled', false ) ) {
+      return {};
+   }
+   startCapturingEvents( eventBus, configuration, log, tooling );
+   console.log( tooling );
    // $scope.enabled = enabled;
    // if( !$scope.enabled ) {
    //    return;
@@ -125,91 +130,83 @@ export function create( withDom, features, eventBus, configuration, log ) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// startCapturingEvents.$inject = [ 'axEventBus', 'axConfiguration', 'axLog' ];
-//
-// function startCapturingEvents( eventBus, configuration, log ) {
-//    enabled = configuration.get( 'widgets.laxar-developer-tools-widget.enabled', true );
-//    if( !enabled ) {
-//       return;
-//    }
-//
-//    ax._tooling.pages.addListener( onPageChange );
-//
-//    developerHooks = window.axDeveloperTools = ( window.axDeveloperTools || {} );
-//    developerHooks.buffers = ( developerHooks.buffers || { events: [], log: [] } );
-//    developerHooks.eventCounter = developerHooks.eventCounter || Date.now();
-//    developerHooks.logCounter = developerHooks.logCounter || Date.now();
-//    developerHooks.pageInfo = developerHooks.pageInfo || ax._tooling.pages.current();
-//    developerHooks.pageInfoVersion = developerHooks.pageInfoVersion || 1;
-//
-//    if( !hasLogChannel ) {
-//       log.addLogChannel( logChannel );
-//       hasLogChannel = true;
-//    }
-//
-//    ensureEventBusInspection( eventBus );
-//
-//    window.addEventListener( 'beforeunload', () => {
-//       if( hasLogChannel ) {
-//          log.removeLogChannel( logChannel );
-//          hasLogChannel = false;
-//       }
-//       if( cleanupInspector ) {
-//          cleanupInspector();
-//          cleanupInspector = null;
-//       }
-//    } );
-//
-//    ////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//    function logChannel( messageObject ) {
-//       const index = developerHooks.logCounter++;
-//       const jsonItem = JSON.stringify( messageObject );
-//       pushIntoStore( 'log', { index, json: jsonItem } );
-//    }
-// }
+function startCapturingEvents( eventBus, configuration, log, tooling ) {
+   console.log( window.laxarDeveloperToolsApi );
+   //tooling.onChange( onPageChange );
 
-// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// function ensureEventBusInspection( globalEventBus ) {
-//    if( cleanupInspector ) {
-//       cleanupInspector();
-//    }
-//
-//    cleanupInspector = globalEventBus.addInspector( item => {
-//       const index = developerHooks.eventCounter++;
-//       const jsonItem = JSON.stringify( ax.object.options( { time: Date.now() }, item ) );
-//
-//       pushIntoStore( 'events', {
-//          index,
-//          json: jsonItem
-//       } );
-//    } );
-// }
-//
-// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// function onPageChange( pageInfo ) {
-//    if( ng.equals( developerHooks.pageInfo, pageInfo ) ) {
-//       return;
-//    }
-//    developerHooks.pageInfo = pageInfo;
-//    ++developerHooks.pageInfoVersion;
-// }
-//
-// ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-// function pushIntoStore( storeName, item ) {
-//    const buffer = developerHooks.buffers[ storeName ];
-//    while( buffer.length >= BUFFER_SIZE ) {
-//       buffer.shift();
-//    }
-//    buffer.push( item );
-// }
+   developerHooks = window.laxarDeveloperToolsApi = ( window.laxarDeveloperToolsApi || {} );
+   developerHooks.buffers = ( developerHooks.buffers || { events: [], log: [] } );
+   developerHooks.eventCounter = developerHooks.eventCounter || Date.now();
+   developerHooks.logCounter = developerHooks.logCounter || Date.now();
+   developerHooks.pageInfo = developerHooks.pageInfo; // || ax._tooling.pages.current();
+   developerHooks.pageInfoVersion = developerHooks.pageInfoVersion || 1;
+   //
+   // if( !hasLogChannel ) {
+   //    log.addLogChannel( logChannel );
+   //    hasLogChannel = true;
+   // }
+   //
+   // ensureEventBusInspection( eventBus );
+   //
+   // window.addEventListener( 'beforeunload', () => {
+   //    if( hasLogChannel ) {
+   //       log.removeLogChannel( logChannel );
+   //       hasLogChannel = false;
+   //    }
+   //    if( cleanupInspector ) {
+   //       cleanupInspector();
+   //       cleanupInspector = null;
+   //    }
+   // } );
+   //
+   // ////////////////////////////////////////////////////////////////////////////////////////////////////////
+   //
+   // function logChannel( messageObject ) {
+   //    const index = developerHooks.logCounter++;
+   //    const jsonItem = JSON.stringify( messageObject );
+   //    pushIntoStore( 'log', { index, json: jsonItem } );
+   // }
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//
-// export const name = ng.module( 'axDeveloperToolsWidget', [] )
-//    .run( [ 'axGlobalEventBus', startCapturingEvents ] )
-//    .controller( 'AxDeveloperToolsWidgetController', Controller ).name;
+
+function ensureEventBusInspection( globalEventBus ) {
+   if( cleanupInspector ) {
+      cleanupInspector();
+   }
+
+   cleanupInspector = globalEventBus.addInspector( item => {
+      const index = developerHooks.eventCounter++;
+      const jsonItem = JSON.stringify( ax.object.options( { time: Date.now() }, item ) );
+
+      pushIntoStore( 'events', {
+         index,
+         json: jsonItem
+      } );
+   } );
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function onPageChange( pageInfo ) {
+   console.log('pageInfo');
+   console.log(pageInfo);
+   // if( ng.equals( developerHooks.pageInfo, pageInfo ) ) {
+   //    return;
+   // }
+   // developerHooks.pageInfo = pageInfo;
+   // ++developerHooks.pageInfoVersion;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function pushIntoStore( storeName, item ) {
+   const buffer = developerHooks.buffers[ storeName ];
+   while( buffer.length >= BUFFER_SIZE ) {
+      buffer.shift();
+   }
+   buffer.push( item );
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
