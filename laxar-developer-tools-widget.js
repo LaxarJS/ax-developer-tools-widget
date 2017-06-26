@@ -4,9 +4,11 @@
  * http://laxarjs.org/license
  */
 
+import contentBundle from './content-bundle';
+
 export const injections = [
-   'axWithDom', 'axFeatures', 'axEventBus', 'axLog', 'axConfiguration', 'axFlowService' ];
-export function create( withDom, features, eventBus, log, configuration, flowService ) {
+   'axWithDom', 'axFeatures', 'axEventBus', 'axLog', 'axConfiguration' ];
+export function create( withDom, features, eventBus, log, configuration ) {
    const enabled = configuration.get( 'widgets.laxar-developer-tools-widget.enabled', true );
    if( !enabled ) {
       return {};
@@ -36,15 +38,6 @@ export function create( withDom, features, eventBus, log, configuration, flowSer
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
    function openContentWindow() {
-
-      // const contentUrl = `${require.toUrl( './content/' ) +
-      //    ( $scope.features.develop.enabled ? 'debug' : 'index' )}.html`;
-
-      let contentUrl = `./content/${(features.develop.enabled ? 'debug' : 'index')}.html`;
-
-      contentUrl = 'http://localhost:8080/' +
-                   'application/widgets/laxar/laxar-developer-tools-widget/content/index.html';
-
       const settings = {
          resizable: 'yes',
          scrollbars: 'yes',
@@ -57,8 +50,9 @@ export function create( withDom, features, eventBus, log, configuration, flowSer
          return `${key}=${settings[ key ]}`;
       } ).join( ',' );
 
+
       if( !contentWindow || contentWindow.closed ) {
-         contentWindow = window.open( contentUrl, 'laxarDeveloperTools', settingsString );
+         contentWindow = window.open( contentBundle.index, 'axDeveloperTools', settingsString );
       }
 
       try {
@@ -66,7 +60,8 @@ export function create( withDom, features, eventBus, log, configuration, flowSer
       }
       catch( e ) {
          log.warn(
-            'LaxarDeveloperToolsWidget: Popup was blocked. Unblock in browser, or use the "button" feature.'
+            'Laxar-developer-tools-widget: Popup was blocked.' +
+            ' Unblock in browser, or use the "button" feature.'
          );
       }
    }
