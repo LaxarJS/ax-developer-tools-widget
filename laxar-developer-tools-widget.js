@@ -4,36 +4,14 @@
  * http://laxarjs.org/license
  */
 
-import * as ng from 'angular';
-import * as ax from 'laxar';
-
-const BUFFER_SIZE = 2500;
-
-// To capture navigation and lifecycle events, the event log persists across LaxarJS navigation.
-let contentWindow;
-let cleanupInspector;
-let hasLogChannel;
-
-let developerHooks = {};
-let enabled;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-export const injections = [ 'axWithDom', 'axFeatures', 'axEventBus', 'axConfiguration', 'axLog', 'axTooling' ];
-export function create( withDom, features, eventBus, configuration, log, tooling ) {
-   if( !configuration.get( 'tooling.enabled', false ) ) {
+export const injections = [
+   'axWithDom', 'axFeatures', 'axEventBus', 'axLog', 'axConfiguration', 'axFlowService' ];
+export function create( withDom, features, eventBus, log, configuration, flowService ) {
+   const enabled = configuration.get( 'widgets.laxar-developer-tools-widget.enabled', true );
+   if( !enabled ) {
       return {};
    }
-   startCapturingEvents( eventBus, configuration, log, tooling );
-   console.log( tooling );
-   // $scope.enabled = enabled;
-   // if( !$scope.enabled ) {
-   //    return;
-   // }
-
-   // Needed for inspection to work with laxar-mocks (run-block is run too early).
-   //ensureEventBusInspection( eventBus );
-
+   let contentWindow;
    features.open.onActions.forEach( action => {
       eventBus.subscribe( `takeActionRequest.${action}`, event => {
          openContentWindow();
@@ -45,32 +23,27 @@ export function create( withDom, features, eventBus, configuration, log, tooling
       window[ features.open.onGlobalMethod ] = openContentWindow;
    }
 
-   developerHooks.gridSettings = configuration.get( 'tooling.grid', undefined );
-   if( developerHooks.gridSettings === undefined && Object.keys( features.grid ).length > 0 ) {
-      developerHooks.gridSettings = features.grid;
-   }
-
-   //$scope.$on( '$destroy', cleanup );
-
-
-   ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-   // function cleanup() {
-   //    if( $scope.features.open.onGlobalMethod ) {
-   //       delete window[ $scope.features.open.onGlobalMethod ];
-   //    }
-   // }
+   eventBus.subscribe( 'endLifecycleRequest', cleanup );
 
    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-   function openContentWindow( mode ) {
-      // const contentUrl = `${require.toUrl( './content/' ) +
-      //    ( mode || ( $scope.features.develop.enabled ? 'debug' : 'index' ) )}.html`;
+   function cleanup() {
+      if( features.open.onGlobalMethod ) {
+         delete window[ features.open.onGlobalMethod ];
+      }
+   }
 
-      let contentUrl =
-         `./content/${( mode || ( features.develop.enabled ? 'debug' : 'index' ) )}.html`;
+   ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+   function openContentWindow() {
+
+      // const contentUrl = `${require.toUrl( './content/' ) +
+      //    ( $scope.features.develop.enabled ? 'debug' : 'index' )}.html`;
+
+      let contentUrl = `./content/${(features.develop.enabled ? 'debug' : 'index')}.html`;
+
       contentUrl = 'http://localhost:8080/' +
-                   'application/widgets/laxar/laxar-developer-tools-widget/content/#!/tools/';
+                   'application/widgets/laxar/laxar-developer-tools-widget/content/index.html';
 
       const settings = {
          resizable: 'yes',
@@ -85,7 +58,7 @@ export function create( withDom, features, eventBus, configuration, log, tooling
       } ).join( ',' );
 
       if( !contentWindow || contentWindow.closed ) {
-         contentWindow = window.open( contentUrl, 'axDeveloperTools', settingsString );
+         contentWindow = window.open( contentUrl, 'laxarDeveloperTools', settingsString );
       }
 
       try {
@@ -93,7 +66,7 @@ export function create( withDom, features, eventBus, configuration, log, tooling
       }
       catch( e ) {
          log.warn(
-            'AxDeveloperToolsWidget: Popup was blocked. Unblock in browser, or use the "button" feature.'
+            'LaxarDeveloperToolsWidget: Popup was blocked. Unblock in browser, or use the "button" feature.'
          );
       }
    }
@@ -127,86 +100,3 @@ export function create( withDom, features, eventBus, configuration, log, tooling
 
    return { onDomAvailable: render };
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-function startCapturingEvents( eventBus, configuration, log, tooling ) {
-   console.log( window.laxarDeveloperToolsApi );
-   //tooling.onChange( onPageChange );
-
-   developerHooks = window.laxarDeveloperToolsApi = ( window.laxarDeveloperToolsApi || {} );
-   developerHooks.buffers = ( developerHooks.buffers || { events: [], log: [] } );
-   developerHooks.eventCounter = developerHooks.eventCounter || Date.now();
-   developerHooks.logCounter = developerHooks.logCounter || Date.now();
-   developerHooks.pageInfo = developerHooks.pageInfo; // || ax._tooling.pages.current();
-   developerHooks.pageInfoVersion = developerHooks.pageInfoVersion || 1;
-   //
-   // if( !hasLogChannel ) {
-   //    log.addLogChannel( logChannel );
-   //    hasLogChannel = true;
-   // }
-   //
-   // ensureEventBusInspection( eventBus );
-   //
-   // window.addEventListener( 'beforeunload', () => {
-   //    if( hasLogChannel ) {
-   //       log.removeLogChannel( logChannel );
-   //       hasLogChannel = false;
-   //    }
-   //    if( cleanupInspector ) {
-   //       cleanupInspector();
-   //       cleanupInspector = null;
-   //    }
-   // } );
-   //
-   // ////////////////////////////////////////////////////////////////////////////////////////////////////////
-   //
-   // function logChannel( messageObject ) {
-   //    const index = developerHooks.logCounter++;
-   //    const jsonItem = JSON.stringify( messageObject );
-   //    pushIntoStore( 'log', { index, json: jsonItem } );
-   // }
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-function ensureEventBusInspection( globalEventBus ) {
-   if( cleanupInspector ) {
-      cleanupInspector();
-   }
-
-   cleanupInspector = globalEventBus.addInspector( item => {
-      const index = developerHooks.eventCounter++;
-      const jsonItem = JSON.stringify( ax.object.options( { time: Date.now() }, item ) );
-
-      pushIntoStore( 'events', {
-         index,
-         json: jsonItem
-      } );
-   } );
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-function onPageChange( pageInfo ) {
-   console.log('pageInfo');
-   console.log(pageInfo);
-   // if( ng.equals( developerHooks.pageInfo, pageInfo ) ) {
-   //    return;
-   // }
-   // developerHooks.pageInfo = pageInfo;
-   // ++developerHooks.pageInfoVersion;
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-function pushIntoStore( storeName, item ) {
-   const buffer = developerHooks.buffers[ storeName ];
-   while( buffer.length >= BUFFER_SIZE ) {
-      buffer.shift();
-   }
-   buffer.push( item );
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
-

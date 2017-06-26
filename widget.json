@@ -43,38 +43,6 @@
                }
             }
          },
-         "grid": {
-            "type": "object",
-            "properties": {
-               "anchor": {
-                  "type": "string"
-               },
-               "columns": {
-                  "type": "object",
-                  "properties": {
-                     "count": {
-                        "type": "integer",
-                        "description": "The number of grid columns to draw"
-                     },
-                     "width": {
-                        "type": "integer",
-                        "description": "The width of each CSS grid column (in pixels, including padding, without gutter)"
-                     },
-                     "padding": {
-                        "type": "integer",
-                        "description": "The left and right padding for each grid column (in pixels)"
-                     },
-                     "gutter": {
-                        "type": "integer",
-                        "description": "The horizontal space between two grid columns (in pixels)."
-                     }
-                  }
-               },
-               "css": {
-                  "type": "object"
-               }
-            }
-         },
          "develop": {
             "type": "object",
             "description": "allows to use the development version (debug.html) of the developer tools",

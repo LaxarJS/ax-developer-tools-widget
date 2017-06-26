@@ -1,9 +1,11 @@
-# ax-developer-tools-widget [![Build Status](https://travis-ci.org/LaxarJS/ax-developer-tools-widget.svg?branch=master)](https://travis-ci.org/LaxarJS/ax-developer-tools-widget)
+# laxar-developer-tools-widget [![Build Status](https://travis-ci.org/LaxarJS/laxar-developer-tools-widget.svg?branch=master)](https://travis-ci.org/LaxarJS/laxar-developer-tools-widget)
 
-The ax-developer-tools-widget allows to open a _developer tools window_ that displays application events, helps visualizing the structure of the current page, and allows to browse log messages of the running LaxarJS application.
+The laxar-developer-tools-widget allows to open a _developer tools window_ that embeds the [laxar-developer-tools-content](https://github.com/LaxarJS/laxar-developer-tools-content/README.md) application.
+This application displays application events, helps visualizing the structure of the current page, and allows to browse log messages of the running LaxarJS application.
 
 
 ## Content
+
 * [Appearance](#appearance)
 * [Usage](#usage)
 * [Features](#features)
@@ -13,39 +15,22 @@ The ax-developer-tools-widget allows to open a _developer tools window_ that dis
 
 ## Appearance
 
-### Events tab
-
-![The event log of the LaxarJS developer tools](docs/events.png)
-
-The events tab displays the latest publish/subscribe events of the currently running application, including subscribe/unsubscribe calls, as well as publication and delivery of events.
-Events may be filtered by name, pattern, or source/target.
-
-### Page tab
-
-![The page inspector of the LaxarJS developer tools](docs/page.png)
-
-This "fusebox" view of the running application visualizes which widgets are connected through shared topics.
-See [below](#usage) for more information on how to enable page inspection.
-
-### Log tab
-
-The log tab lists log messages that were created using the `laxar.log` API.
-You can also use the browser console to inspect these messages without opening the developer tools.
+The laxar-developer-tools-widget optionally displays a button to allow the user to open a new window with the [laxar-developer-tools-content](https://github.com/LaxarJS/laxar-developer-tools-content/README.md) application.
 
 
 ## Usage
 
 ### Installation
 
-For this version of the laxar-developer-tools-widget, make sure that your host application is using LaxarJS v1.2.0 or newer.
-For installation instruction take a look at the [LaxarJS documentation](https://github.com/LaxarJS/laxar/blob/master/docs/manuals/installing_widgets.md).
+For this version of the laxar-developer-tools-widget, make sure that your host application is using LaxarJS v2.0.0 or newer.
+For installation instruction take a look at the [LaxarJS documentation](http://laxarjs.org/docs/laxar-v2-latest/manuals/installing_widgets).
 
 
 ### Configuration example
 
 ```json
 {
-   "widget": "laxarjs/ax-developer-tools-widget"
+   "widget": "laxar-developer-tools-widget"
 }
 ```
 
@@ -54,7 +39,7 @@ The window will also open when the global method `window.laxarShowDeveloperTools
 
 ```json
 {
-   "widget": "laxarjs/ax-developer-tools-widget",
+   "widget": "laxar-developer-tools-widget",
    "features": {
       "button": {
          "enabled": false
@@ -74,88 +59,10 @@ _Note:_ To open the developer window in this fashion, it might be necessary to a
 For full configuration options refer to the [widget.json](widget.json).
 
 
-### Enabling Page Inspection
-
-In the page tab, area nesting (blue connections) will work out of the box.
-The standard [LaxarJS patterns](//github.com/LaxarJS/laxar-patterns/blob/master/docs/index.md#families-of-laxarjs-patterns) *resource*, *action* and *flag* are also supported, but additional markup needs to be added to your *widget.json* files for visualization to work:
-
-* Configurable topics must use `"format": "topic"` in their JSON schema (with the exception of flag-receivers, which should use `"format": "flag-topic"` to support negated flags). For validation, this is recommended anyway.
-
-* Configurable topics must specify the new field `"axRole"`:
-
-   - `"outlet"` must be used for topic publishers (resource masters, action triggers, flag providers),
-
-   - `"inlet"` must be used for topic subscribers (resource slaves, action/flag handlers).
-
-* If not evident from the configuration path, the field `"axPattern"` must be specified to indicate the standard pattern (one of `"resource", "action", "flag"`) associated with the field.
-
-For example, a widget that is master for a configurable `user.resource` would use the following JSON schema snippet, with description fields omitted in favour of brevity:
-
-```js
-"features": {
-   // ...
-   "user": {
-      "type": "object",
-      "properties": {
-         "resource": {
-            "type": "string",
-            "format": "topic",
-            "axRole": "outlet"
-         }
-      }
-   }
-}
-```
-
-Alternatively, a widget/activty that subscribes to `order.onActions` would use this:
-
-```js
-"features": {
-   // ...
-   "order": {
-      "type": "object",
-      "properties": {
-         "onActions": {
-            "type": "array",
-            "item": {
-               "type": "string",
-               "format": "topic",
-               "axRole": "inlet"
-            }
-         }
-      }
-   }
-}
-```
-
-
-Finally, a widget/activty that processes a flag `visibility.toggleOn` would use this:
-
-```js
-"features": {
-   // ...
-   "visibility": {
-      "type": "object",
-      "properties": {
-         "toggleOn": {
-            "type": "string",
-            "format": "flag-topic",
-            "axRole": "inlet",
-            "axPattern": "flag"
-         }
-      }
-   }
-}
-```
-
-The page inspector simply ignores configuration values that cannot be unambiguously assigned to a specific pattern and role.
-
-[Compositions](https://github.com/LaxarJS/laxar/blob/master/docs/manuals/writing_compositions.md) are supported as well, just make sure to add "`format`' and "`role`"
-
 
 ### Development
 
-To _develop_ (and not just use) the ax-developer-tools-widget _itself,_ the content application must be prepared:
+To _develop_ (and not just use) the laxar-developer-tools-widget _itself,_ the content application must be prepared:
 
 ```sh
 cd content
@@ -166,7 +73,7 @@ To have the debug-version run within the developer tools window so that you may 
 
 ```json
 {
-   "widget": "laxarjs/ax-developer-tools-widget",
+   "widget": "laxar-developer-tools-widget",
    "features": {
       "develop": {
          "enabled": true
@@ -180,7 +87,7 @@ To build and _release a new version_, the release-version of the embedded applic
 
 ```sh
 cd content
-npm run-script optimize
+npm run dist
 git add var
 git commit ...
 ```
@@ -199,18 +106,6 @@ Alternatively, a _button_ (see below) may be used.
 *R1.2* The widget MUST allow to configure a global javascript method name that opens the window directly.
 _Note:_ This method is intended to be invoked manually by developers, and not as an API.
 
-*R1.3* The widget MUST establish a _communication channel_ to the contents of the developer tools window when open.
-
-*R1.4* The widget MUST intercept _event bus activity_ from the host application and forward it to the communication channel, encoding each message as a JSON string.
-_Note:_ The JSON encoding is necessary to avoid that objects and their prototypes are kept across the window boundary.
-Such cross-references leads to slow and error-prone behavior, at least in MSIE11.
-
-*R1.5* The widget MUST intercept LaxarJS _log messages_ from the host application and forward them to the communication channel, encoding each message as a JSON string _(see above)_.
-
-*R1.6* The widget MUST provide _content_ that must not depend in any way on the contents of the host application, except for relying on the communication channel.
-The widget MUST observe the communication channel from within the window and update its contents with no more than a second delay.
-Refer to the [AxHostConnectorWidget](content/includes/widgets/developer-tools/ax-host-connector-widget/README.md) for details.
-
 
 ### 2. Provide Access through a Graphical Button _(button)_
 
@@ -222,55 +117,23 @@ This should be the default behavior.
 *R2.3* It must be possible to configure a different label for the button.
 
 
-### 3. Display Events from the Host Application
-
-*R3.1* The widget MUST allow to view events from the host application.
-Refer to the [events-display-widget](content/includes/widgets/events-display-widget/README.md) for details.
-
-
-### 4. Display Log Messages from the Host Application
-
-*R4.1* The widget MUST allow to view log messages from the host application.
-Refer to the [log-display-widget](content/includes/widgets/log-display-widget/README.md) for details.
-
-
-### 5. Visualize Widget Positions within the Host Application
-
-*R5.1* The widget MUST help to identify widgets and their grid-alignment within the host application.
-Refer to the [AxDeveloperToolbarWidget](content/includes/widgets/developer-tools/ax-developer-toolbar-widget/README.md) for details.
-
-
-### 6. No-Op Mode
+### 3. No-Op Mode
 
 The widget MUST support being disabled completely using an application-wide _enabled-flag_.
 
-*R6.1* The enabled-flag must be read from the LaxarJS configuration path `widgets.laxar-developer-tools-widget.enabled`.
+*R3.1* The enabled-flag must be read from the LaxarJS configuration path `widgets.laxar-developer-tools-widget.enabled`.
 The default value for the enabled-flag is `true`.
 If the enabled-flag value is `false`, the widget MUST NOT subscribe to _takeActionRequest_ events, even if configured for the _open_ feature.
 
-*R6.2* If the enabled-flag value is `false`, the widget MUST NOT intercept any events.
+*R3.2* If the enabled-flag value is `false`, a global method MUST NOT be added, even if configured for the _open_ feature.
 
-*R6.3* If the enabled-flag value is `false`, the widget MUST NOT intercept any log messages.
-
-*R6.4* If the enabled-flag value is `false`, a global method MUST NOT be added, even if configured for the _open_ feature.
-
-*R6.5* If the enabled-flag value is `false`, a button MUST NOT be rendered, even if the _button_ feature has been enabled (see above).
-
-*R6.6* If the enabled-flag value is `false`, the pattern tracker (see below) must always be disabled.
+*R3.3* If the enabled-flag value is `false`, a button MUST NOT be rendered, even if the _button_ feature has been enabled (see above).
 
 
-### 7. Visualize the Structure of the Current Page
+### 4. Embed the laxar-developer-tools-content Application
 
-The widget must allow to inspect _nesting relationship_ between widgets, as well as connections formed by _pattern topics_ (resource, actions, flags) that are configured for widgets  and compositions on the page.
-
-*R7.1* The widget MUST allow to widgets, activities, layouts and compositions, insofar as the correct meta data has been added to their descriptors.
-Refer to the embedded [page-inspector-widget](content/includes/widgets/page-inspector-widget/README.md) for details.
-
-
-### 8. Visualize the Structure of the Current Page
-
-*R8.1* The widget MUST allow to inspect widgets and activities of the current host application page.
-Refer to the embedded [events-display-widget](content/includes/widgets/events-display-widget/README.md) for details.
+*R4.1* The widget MUST embed the laxar-developer-tools-content application to provide the developer tools for all browser.
+Refer to the [laxar-developer-tools-content](https://github.com/LaxarJS/laxar-developer-tools-content/README.md) for details.
 
 
 ## Integration
@@ -290,10 +153,9 @@ The widget supports the following event patterns as specified by the [LaxarJS Pa
 
 The following resources are useful or necessary for the understanding of this document.
 The links refer to the latest version of the documentation.
-Refer to the [bower.json](bower.json) for the specific version that is normative for this document.
 
 * [LaxarJS Concepts]
 * [LaxarJS Patterns]
 
-[LaxarJS Concepts]: https://github.com/LaxarJS/laxar/blob/master/docs/concepts.md "LaxarJS Concepts"
-[LaxarJS Patterns]: https://github.com/LaxarJS/laxar_patterns/blob/master/docs/index.md "LaxarJS Patterns"
+[LaxarJS Concepts]: http://laxarjs.org/docs/laxar-v2-latest/concepts "LaxarJS Concepts"
+[LaxarJS Patterns]: http://laxarjs.org/docs/laxar-patterns-v2-latest "LaxarJS Patterns"
