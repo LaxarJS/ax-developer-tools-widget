@@ -5,7 +5,6 @@
  */
 
 import * as axMocks from 'laxar-mocks';
-import * as ax from 'laxar';
 
 describe( 'The laxar-developer-tools-widget', () => {
 

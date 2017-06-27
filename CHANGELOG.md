@@ -3,6 +3,8 @@
 
 ## Last Changes
 
+- [#65](https://github.com/LaxarJS/laxar-developer-tools-widget/issues/65): upgraded to LaxarJS v2
+
 - [#64](https://github.com/LaxarJS/laxar-developer-tools-widget/issues/64): fix submodule repository
 
 - [#63](https://github.com/LaxarJS/laxar-developer-tools-widget/issues/63): using content application as submodule now
