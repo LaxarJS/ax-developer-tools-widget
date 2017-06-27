@@ -1,4 +1,4 @@
 {
    "extends": "laxarjs",
-   "plugins": [ "html", "angular" ]
+   "plugins": [ "html" ]
 }
