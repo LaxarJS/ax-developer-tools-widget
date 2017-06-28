@@ -1,4 +1,7 @@
 {
-   "extends": "laxarjs",
-   "plugins": [ "html" ]
+   "plugins": [ "es5", "html" ],
+   "extends": [
+      "eslint:recommended",
+      "plugin:es5/no-es2015"
+   ]
 }

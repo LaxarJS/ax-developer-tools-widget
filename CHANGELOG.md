@@ -3,19 +3,20 @@
 
 ## Last Changes
 
+- [#67](https://github.com/LaxarJS/laxar-developer-tools-widget/issues/67): fixed loading widget with `webpack -p`
+
+
+## v3.0.0-alpha.0
+
 - [#65](https://github.com/LaxarJS/laxar-developer-tools-widget/issues/65): upgraded to LaxarJS v2
-
 - [#64](https://github.com/LaxarJS/laxar-developer-tools-widget/issues/64): fix submodule repository
-
 - [#63](https://github.com/LaxarJS/laxar-developer-tools-widget/issues/63): using content application as submodule now
-
 - [#62](https://github.com/LaxarJS/laxar-developer-tools-widget/issues/62): use react instead of angular and laxar 2.x for content application
 
 
 ## v2.2.0
 
 - [#61](https://github.com/LaxarJS/laxar-developer-tools-widget/issues/61): created grunt task for not optimized version for extensions
-
 - [#59](https://github.com/LaxarJS/laxar-developer-tools-widget/issues/59): developer-toolbar-widget: fixed reload page handling for widget outline
 
 
@@ -25,7 +26,6 @@
 ## v2.1.0-alpha.5
 
 - [#58](https://github.com/LaxarJS/laxar-developer-tools-widget/issues/58): Use grid settings from application configuration
-
 - [#57](https://github.com/LaxarJS/laxar-developer-tools-widget/issues/57): developer-toolbar-widget: handle empty grid settings resource
 
 

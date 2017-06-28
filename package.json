@@ -10,12 +10,10 @@
       "url": "https://github.com/LaxarJS/laxar-developer-tools-widget.git"
    },
    "scripts": {
-      "prepublish": "npm run dist",
       "test": "npm run karma && npm run eslint",
-      "dist": "webpack -p",
       "start": "webpack && webpack-dev-server --inline",
       "karma": "karma start karma.config.js",
-      "eslint": "eslint *.js spec"
+      "eslint": "eslint *.js"
    },
    "devDependencies": {
       "babel-core": "^6.23.1",
@@ -25,6 +23,7 @@
       "cross-env": "^3.2.3",
       "eslint": "^3.17.1",
       "eslint-config-laxarjs": "^0.3.0",
+      "eslint-plugin-es5": "^1.1.0",
       "eslint-plugin-html": "^3.0.0",
       "file-loader": "^0.11.2",
       "html-loader": "^0.4.5",
