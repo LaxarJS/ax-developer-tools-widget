@@ -5,10 +5,10 @@
  */
 /* eslint-env node */
 
-const pkg = require( './package.json' );
-const path = require( 'path' );
+var pkg = require( './package.json' );
+var path = require( 'path' );
 
-const webpack = require( 'laxar-infrastructure' ).webpack( {
+var webpack = require( 'laxar-infrastructure' ).webpack( {
    context: __dirname,
    module: {
       rules: [
@@ -29,5 +29,5 @@ const webpack = require( 'laxar-infrastructure' ).webpack( {
 
 module.exports = [
    webpack.library(),
-   webpack.browserSpec( [ `./spec/${pkg.name}.spec.js` ] )
+   webpack.browserSpec( [ './spec/' + pkg.name + '.spec.js' ] )
 ];
