@@ -4,6 +4,9 @@
 ## Last Changes
 
 
+## v3.0.0
+
+
 ## v3.0.0-alpha.1
 
 - [#67](https://github.com/LaxarJS/laxar-developer-tools-widget/issues/67): fixed loading widget with `webpack -p`
