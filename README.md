@@ -15,7 +15,7 @@ This application displays application events, helps visualizing the structure of
 
 ## Appearance
 
-The laxar-developer-tools-widget optionally displays a button to allow the user to open a new window with the [laxar-developer-tools-content](https://github.com/LaxarJS/laxar-developer-tools-content/README.md) application.
+The laxar-developer-tools-widget optionally displays a button to allow the user to open a new window with the [laxar-developer-tools-content](https://github.com/LaxarJS/laxar-developer-tools-content/blob/v2.0.0/README.md) application.
 
 
 ## Usage
@@ -133,7 +133,7 @@ If the enabled-flag value is `false`, the widget MUST NOT subscribe to _takeActi
 ### 4. Embed the laxar-developer-tools-content Application
 
 *R4.1* The widget MUST embed the laxar-developer-tools-content application to provide the developer tools for all browser.
-Refer to the [laxar-developer-tools-content](https://github.com/LaxarJS/laxar-developer-tools-content/README.md) for details.
+Refer to the [laxar-developer-tools-content](https://github.com/LaxarJS/laxar-developer-tools-content/blob/v2.0.0/README.md) project for details.
 
 
 ## Integration

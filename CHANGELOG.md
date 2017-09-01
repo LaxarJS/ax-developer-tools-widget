@@ -3,6 +3,8 @@
 
 ## Last Changes
 
+- [#69](https://github.com/LaxarJS/laxar-developer-tools-widget/issues/69): documentation: fixed broken links
+
 
 ## v3.0.0
 
