@@ -3,6 +3,9 @@
 
 ## Last Changes
 
+
+## v3.0.2
+
 - [#70](https://github.com/LaxarJS/laxar-developer-tools-widget/issues/70): bump version to fix content of NPM bundle
 
 
